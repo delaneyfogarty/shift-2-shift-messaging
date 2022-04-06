@@ -54,20 +54,21 @@ export async function fetchAndDisplay(){
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const data = new FormData(form);
     const fromUser = await getUser();
+    const from_email = fromUser.email;
+    const recipient_id = id;
 
-    await sendMessage({
-        text: data.get('text'),
-        from_email: fromUser.email,
-        recipient_id: id,
 
-    });
+    const data = new FormData(form);
+    const text = data.get('text');
+    const imageFile = data.get('my-image');
+    const uploadedImage = await uploadImage(imageFile);
 
+    const URL = makeImageURL(uploadedImage.Key);
+
+    await sendMessage(recipient_id, from_email, text, URL);
     form.reset();
-
     await fetchAndDisplay();
-
 });
 
 logoutButton.addEventListener('click', () => {
