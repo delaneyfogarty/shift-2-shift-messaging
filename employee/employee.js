@@ -1,4 +1,4 @@
-import { getUser, sendMessage, checkAuth, getProfile, incrementRating, decrementRating, logout } from '../fetch-utils.js';
+import { getUser, sendMessage, checkAuth, getProfile, incrementRating, decrementRating, logout, uploadImage, makeImageUrl } from '../fetch-utils.js';
 
 import { renderMessages, renderRating } from '../render-utils.js';
 
@@ -64,7 +64,7 @@ form.addEventListener('submit', async (e) => {
     const imageFile = data.get('my-image');
     const uploadedImage = await uploadImage(imageFile);
 
-    const URL = makeImageURL(uploadedImage.Key);
+    const URL = makeImageUrl(uploadedImage.Key);
 
     await sendMessage(recipient_id, from_email, text, URL);
     form.reset();

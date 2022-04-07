@@ -106,7 +106,6 @@ export async function uploadImage(myImage) {
     return checkError(response);
 }
 
-
 export function getUser() {
     return client.auth.session() && client.auth.session().user;
 }
