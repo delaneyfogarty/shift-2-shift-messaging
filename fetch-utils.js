@@ -106,6 +106,17 @@ export async function uploadImage(myImage) {
     return checkError(response);
 }
 
+export async function sendChat(message) {
+    const response = await client
+        .from('delaneys_chats')
+        .match({
+            message: message
+        })
+        .single();
+
+    return checkError(response);
+}
+
 export function getUser() {
     return client.auth.session() && client.auth.session().user;
 }
