@@ -3,9 +3,7 @@
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indra3ViZGVpanZybnRkbXVucWVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDc1NTM1MTcsImV4cCI6MTk2MzEyOTUxN30.qE-NCGctQQqftyEJnJ49hNdOGf4jDNo61YYMlpDAr2g';
 const SUPABASE_URL = 'https://wkkubdeijvrntdmunqer.supabase.co';
 
-const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-
+export const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 
 
@@ -46,10 +44,15 @@ export async function getMyProfile() {
     return checkError(response);
 }
 
-export async function sendMessage(message) {
+export async function sendMessage(recipient_id, from_email, text, URL) {
     const response = await client
         .from('messages')
-        .insert(message);
+        .insert({
+            recipient_id: recipient_id,
+            from_email: from_email,
+            text: text,
+            image_url: URL
+        });
 
     return checkError(response);
 }
@@ -81,6 +84,31 @@ export async function decrementRating(id) {
         .update({ karma: profile.karma - 1 })
         .match({ id })
         .select();
+
+    return checkError(response);
+}
+
+export function makeImageUrl(imageKey) {
+    return `${SUPABASE_URL}/storage/v1/object/public/${imageKey}`;
+}
+
+export async function uploadImage(myImage) {
+    const response = await client
+        .storage
+        .from('delaney')
+        .upload(myImage.name, myImage, {
+            cacheControl: '3600',
+            upsert: false
+        });
+
+    return checkError(response);
+}
+
+export async function sendChat(message) {
+    const response = await client
+        .from('delaneys_chats')
+        .insert(message)
+        .single();
 
     return checkError(response);
 }

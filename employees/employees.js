@@ -3,6 +3,7 @@ import { checkAuth, getProfiles, logout } from '../fetch-utils.js';
 checkAuth();
 
 const logoutButton = document.getElementById('logout');
+const chatRoomButton = document.querySelector('.chat-room-button');
 
 logoutButton.addEventListener('click', () => {
     logout();
@@ -31,4 +32,8 @@ window.addEventListener('load', async () => {
 
         employeeListEl.append(div);
     }
+});
+
+chatRoomButton.addEventListener('click', () => {
+    window.location.href = '../chat';
 });
